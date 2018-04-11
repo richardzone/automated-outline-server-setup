@@ -1,0 +1,4 @@
+---
+- name: Ensure server hostname is set to "{{ new_hostname }}"
+  hostname:
+    name: "{{ new_hostname }}"

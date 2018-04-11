@@ -1,0 +1,11 @@
+# Editor
+.editorconfig
+
+# Ansible Galaxy dependency roles
+dependent-roles/
+
+# Ansible retry files
+*.retry
+
+# Log files (including Outline server info)
+*.log

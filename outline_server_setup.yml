@@ -1,0 +1,29 @@
+---
+# This playbook configures a Ubuntu/Debian server to become Outline server
+# For optimum performance with TCP BBR enabled, please use Ubuntu 17.10 or above (with kernel >= 4.9)
+#
+# Tested with Linode(https://www.linode.com/) Ubuntu 17.10
+- hosts: my_server
+  roles:
+    - role: install-packages
+      packages: [git, zsh, curl]
+      become: true
+    - create-user-with-ssh-access
+    - configure-oh-my-zsh
+    - role: configure-hostname
+      become: true
+    - role: configure-sudo-without-password
+      become: true
+    - role: install-docker-ce-with-compose
+      become: true
+      docker_edition: 'ce'
+      docker_package_state: present
+      docker_install_compose: true
+      docker_compose_version: "1.19.0"
+    - role: configure-docker
+      become: true
+    - role: enable-tcp-bbr-when-linux-kernel-support-it
+      become: true
+    - role: secure-ssh-config
+      become: true
+    - role: install-outline

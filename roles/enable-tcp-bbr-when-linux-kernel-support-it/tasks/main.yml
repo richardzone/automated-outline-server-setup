@@ -1,0 +1,23 @@
+---
+- name: Get Linux kernel compilation options 
+  command: cat /boot/config-{{ ansible_kernel }}
+  register: kernel_config
+- name: Check if Linux kernel is compiled with TCP BBR options (as a module or builtin)
+  set_fact:
+    bbr_supported: kernel_config.stdout is search("CONFIG_TCP_CONG_BBR=[my]") and kernel_config.stdout is search("CONFIG_NET_SCH_FQ=[my]")
+- name: Enable fq qdisc traffic pacing for BBR
+  sysctl:
+    name: net.core.default_qdisc
+    value: fq
+    sysctl_set: yes
+    state: present
+    reload: yes
+  when: bbr_supported
+- name: Enable fq qdisc traffic pacing for BBR
+  sysctl:
+    name: net.ipv4.tcp_congestion_control
+    value: bbr
+    sysctl_set: yes
+    state: present
+    reload: yes
+  when: bbr_supported

@@ -1,0 +1,7 @@
+---
+- name: Ensure user "{{ new_username }}" is added to docker group to enable docker without sudo
+  user:
+    name: "{{ new_username }}"
+    groups: docker
+    append: yes
+  become: true

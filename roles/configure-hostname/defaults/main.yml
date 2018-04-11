@@ -1,0 +1,2 @@
+---
+new_hostname: "ip-{{ ansible_default_ipv4.address | regex_replace('\\.', '-') }}"

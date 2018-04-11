@@ -1,0 +1,20 @@
+---
+- name: Skip setting up Oh My Zsh if ".zshrc" already exists
+  stat:
+    path: "/home/{{ new_username }}/.zshrc"
+  become: yes
+  become_user: "{{ new_username }}"
+  register: zshrc_stat
+- name: Download Oh My Zsh install script
+  get_url:
+    url: https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
+    dest: /tmp/zsh-installer.sh
+    mode: 0755
+  become: yes
+  become_user: "{{ new_username }}"
+  when: zshrc_stat.stat.exists == False 
+- name: Run Oh My Zsh install script
+  command: /bin/sh /tmp/zsh-installer.sh
+  become: yes
+  become_user: "{{ new_username }}"
+  when: zshrc_stat.stat.exists == False 

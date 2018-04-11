@@ -1,0 +1,16 @@
+---
+- name: Ensure user "{{ new_username }}" is created with superuser privileges
+  user:
+    name: "{{ new_username }}"
+    groups: sudo
+    append: yes
+    create_home: yes
+    shell: /usr/bin/zsh
+    state: present
+  become: true
+- name: Ensure SSH authorized key is installed for user "{{ new_username }}"
+  authorized_key:
+    user: "{{ new_username }}"
+    state: present
+    key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
+  become: true

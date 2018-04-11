@@ -1,0 +1,20 @@
+---
+- name: Download Outline install script
+  get_url:
+    url: "{{ outline_install_script_url }}"
+    dest: /tmp/outline-installer.sh
+    mode: 0755
+- name: Run Outline install script
+  command: /bin/bash /tmp/outline-installer.sh
+  register: outline_install_result
+  become: yes
+- name: Parse API Url and Credentials from installation output
+  set_fact:
+    outline_info: "{{ outline_install_result.stdout | regex_search('\\{[\\s\\S]*\\}') }}"
+- name: Save outline server info to local computer
+  local_action:
+    module: copy
+    content: "{{ outline_info }}"
+    dest: "outline-server-info.log"
+- debug:
+    msg: "Outline server installation complete! Please copy the generated info stored in \"outline-server-info.log\" and paste it in your outline manager app"
