@@ -34,6 +34,8 @@ This playbook enables you to configure a Ubuntu/Debian server to become Outline 
    SSH_USERNAME=root SSH_PASSWORD=your_password ./go-playbook.sh outline_server_setup.yml
    ```
 
+   Modify `root` and `your_password` to match your server's SSH username and password
+
 6. If successful, there should be a `outline-server-info.log` file created in the repo directory. Copy the contents of this file.
 7. Download and install Outline Manager app from https://getoutline.org/
 8. Run Outline Manager app, when asked to "Choose a server", select "Get Started" under "Already have a server?" option.
